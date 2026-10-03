@@ -36,7 +36,7 @@ def chat():
                 "Content-Type": "application/json"
             },
             json={
-                "model": "allam-2-7b",
+                "model": "llama-3.3-70b-versatile",
                 "messages": groq_messages
             }
         )
