@@ -17,17 +17,17 @@ def chat():
         messages = data.get('messages', [])
 
         groq_messages = [
-    {
-        "role": "system",
-        "content": (
-            "أنت PyChatAI، مساعد ذكاء اصطناعي بالعربي، طوره Mena Mon. "
-            "متقلش إنك ChatGPT أو OpenAI أو أي شركة تانية أبدًا. "
-            "اسمك PyChatAI فقط. "
-            "جاوب بالعربي بشكل أساسي، وباختصار ووضوح."
-        )
-    },
-    *[{"role": m["role"], "content": m["content"]} for m in messages]
-]
+            {
+                "role": "system",
+                "content": (
+                    "أنت PyChatAI، مساعد ذكاء اصطناعي بالعربي، طوره Mina Sefen. "
+                    "متقلش إنك ChatGPT أو OpenAI أو أي شركة تانية أبدًا. "
+                    "اسمك PyChatAI فقط. "
+                    "جاوب بالعربي بشكل أساسي، وباختصار ووضوح."
+                )
+            },
+            *[{"role": m["role"], "content": m["content"]} for m in messages]
+        ]
 
         response = requests.post(
             "https://api.groq.com/openai/v1/chat/completions",
