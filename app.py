@@ -36,7 +36,7 @@ def chat():
                 "Content-Type": "application/json"
             },
             json={
-                "model": "openai/gpt-oss-120b",
+                "model": "allam-2-7b",
                 "messages": groq_messages
             }
         )
