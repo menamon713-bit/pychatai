@@ -6,10 +6,7 @@
     <title>AI Chat - مساعد ذكي</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body {
-            height: 100%;
-            overflow: hidden;
-        }
+        html, body { height: 100%; overflow: hidden; }
         body {
             font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
             background: #0a0a0f;
@@ -32,11 +29,7 @@
             background-clip: text;
             font-weight: 800;
         }
-        .header p {
-            font-size: clamp(11px, 3vw, 13px);
-            color: #9ca3af;
-            margin-top: 4px;
-        }
+        .header p { font-size: clamp(11px, 3vw, 13px); color: #9ca3af; margin-top: 4px; }
         .messages {
             flex: 1;
             overflow-y: auto;
@@ -48,10 +41,7 @@
         }
         .messages::-webkit-scrollbar { width: 6px; }
         .messages::-webkit-scrollbar-track { background: transparent; }
-        .messages::-webkit-scrollbar-thumb {
-            background: #2a2a3a;
-            border-radius: 3px;
-        }
+        .messages::-webkit-scrollbar-thumb { background: #2a2a3a; border-radius: 3px; }
         .empty {
             flex: 1;
             display: flex;
@@ -62,35 +52,17 @@
             text-align: center;
             padding: 20px;
         }
-        .empty-icon {
-            font-size: clamp(48px, 15vw, 80px);
-            margin-bottom: 16px;
-            animation: float 3s ease-in-out infinite;
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-        .empty p:first-of-type {
-            font-size: clamp(14px, 4vw, 18px);
-            font-weight: 600;
-            color: #9ca3af;
-        }
-        .empty p:last-of-type {
-            font-size: clamp(12px, 3vw, 14px);
-            margin-top: 6px;
-        }
-        .message {
-            display: flex;
-            max-width: 90%;
-            animation: fadeIn 0.3s;
-        }
+        .empty-icon { font-size: clamp(48px, 15vw, 80px); margin-bottom: 16px; }
+        .empty p:first-of-type { font-size: clamp(14px, 4vw, 18px); font-weight: 600; color: #9ca3af; }
+        .empty p:last-of-type { font-size: clamp(12px, 3vw, 14px); margin-top: 6px; }
+        .message { display: flex; max-width: 90%; animation: fadeIn 0.3s; }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
         .message.user { align-self: flex-end; }
         .message.assistant { align-self: flex-start; }
+        .bubble-wrapper { display: flex; flex-direction: column; gap: 4px; }
         .bubble {
             padding: 10px 14px;
             border-radius: 18px;
@@ -104,7 +76,6 @@
             background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
             color: #fff;
             border-bottom-left-radius: 4px;
-            box-shadow: 0 3px 10px rgba(99, 102, 241, 0.25);
         }
         .assistant .bubble {
             background: #1a1a2e;
@@ -112,6 +83,20 @@
             border: 1px solid #2a2a3a;
             border-bottom-right-radius: 4px;
         }
+        .copy-btn {
+            background: transparent;
+            border: 1px solid #2a2a3a;
+            color: #9ca3af;
+            cursor: pointer;
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            transition: 0.2s;
+            align-self: flex-end;
+            font-family: inherit;
+        }
+        .copy-btn:hover { background: #2a2a3a; color: #fff; }
+        .copy-btn:active { transform: scale(0.95); }
         .typing {
             display: flex;
             gap: 4px;
@@ -121,8 +106,7 @@
             border-radius: 18px;
         }
         .typing span {
-            width: 6px;
-            height: 6px;
+            width: 6px; height: 6px;
             background: #6366f1;
             border-radius: 50%;
             animation: bounce 1.4s infinite;
@@ -134,29 +118,25 @@
             30% { transform: translateY(-6px); opacity: 1; }
         }
         .input-area {
-    padding: 8px 10px;
-    padding-bottom: max(8px, env(safe-area-inset-bottom));
-    border-top: 1px solid #2a2a3a;
-    background: #0a0a0f;
-    flex-shrink: 0;
-}
-        .input-wrapper {
-    max-width: 900px;
-    margin: 0 auto;
-    display: flex;
-    gap: 6px;
-    background: #1a1a2e;
-    border-radius: 22px;
-    padding: 4px 6px 4px 14px;
-    border: 1px solid #2a2a3a;
-    transition: 0.2s;
-    align-items: center;
-    min-height: 48px;
-}
-        .input-wrapper:focus-within {
-            border-color: #6366f1;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            padding: 10px 12px;
+            padding-bottom: max(10px, env(safe-area-inset-bottom));
+            border-top: 1px solid #2a2a3a;
+            background: #0a0a0f;
+            flex-shrink: 0;
         }
+        .input-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            gap: 6px;
+            background: #1a1a2e;
+            border-radius: 24px;
+            padding: 4px 4px 4px 14px;
+            border: 1px solid #2a2a3a;
+            transition: 0.2s;
+            align-items: center;
+        }
+        .input-wrapper:focus-within { border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1); }
         input[type="text"] {
             flex: 1;
             background: transparent;
@@ -166,63 +146,41 @@
             font-size: 15px;
             outline: none;
             min-width: 0;
+            font-family: inherit;
         }
         input::placeholder { color: #6b7280; font-size: 14px; }
-        button {
-    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-    color: #fff;
-    border: none;
-    border-radius: 18px;
-    padding: 10px 16px;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: 0.2s;
-    white-space: nowrap;
-    flex-shrink: 0;
-    min-height: 38px;
-}
-        button:hover:not(:disabled) {
-            transform: scale(1.05);
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        button.send-btn {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 18px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            white-space: nowrap;
+            flex-shrink: 0;
+            font-family: inherit;
         }
-        button:active:not(:disabled) { transform: scale(0.98); }
-        button:disabled {
-            background: #2a2a3a;
-            color: #6b7280;
-            cursor: not-allowed;
-        }
-
-        /* للشاشات الصغيرة (موبايل) */
+        button.send-btn:hover:not(:disabled) { transform: scale(1.05); }
+        button.send-btn:disabled { background: #2a2a3a; color: #6b7280; cursor: not-allowed; }
         @media (max-width: 480px) {
-            .bubble { max-width: 100%; }
             .message { max-width: 95%; }
-            .input-wrapper { padding: 3px 3px 3px 12px; }
-            button { padding: 10px 16px; font-size: 13px; }
+            button.send-btn { padding: 10px 14px; font-size: 13px; }
         }
-
-        /* للشاشات الكبيرة (لابتوب/ديسكتوب) */
         @media (min-width: 768px) {
             .header { padding: 18px 20px; }
             .messages { padding: 24px; gap: 14px; }
-            .bubble { padding: 14px 20px; border-radius: 20px; }
+            .bubble { padding: 14px 20px; }
             .message { max-width: 70%; }
             .input-area { padding: 16px 24px 20px; }
-            .input-wrapper { padding: 6px 6px 6px 20px; }
-            input[type="text"] { padding: 12px 0; font-size: 16px; }
-            button { padding: 12px 24px; font-size: 15px; }
-            .empty-icon { font-size: 96px; }
-        }
-
-        /* للشاشات العريضة جدًا */
-        @media (min-width: 1200px) {
-            .message { max-width: 60%; }
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>🤖 AI Chat</h1>
+        <h1>🤖 PyChatAI</h1>
         <p>مساعدك الذكي بالعربي</p>
     </div>
 
@@ -237,7 +195,7 @@
     <div class="input-area">
         <div class="input-wrapper">
             <input type="text" id="input" placeholder="اكتب رسالتك..." autocomplete="off">
-            <button id="send">إرسال</button>
+            <button class="send-btn" id="send">إرسال</button>
         </div>
     </div>
 
@@ -250,18 +208,39 @@
 
         function addMessage(role, content) {
             if (emptyEl) emptyEl.style.display = 'none';
+            
             const div = document.createElement('div');
             div.className = 'message ' + role;
-            const rendered = role === 'assistant' ? marked.parse(content) : escapeHtml(content);
-div.innerHTML = '<div class="bubble">' + rendered + '</div>';
+            
+            const wrapper = document.createElement('div');
+            wrapper.className = 'bubble-wrapper';
+            
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+            bubble.textContent = content;
+            
+            wrapper.appendChild(bubble);
+            
+            // زر النسخ للردود فقط
+            if (role === 'assistant') {
+                const copyBtn = document.createElement('button');
+                copyBtn.className = 'copy-btn';
+                copyBtn.textContent = '📋 نسخ';
+                copyBtn.onclick = function() {
+                    navigator.clipboard.writeText(content).then(() => {
+                        copyBtn.textContent = '✅ تم';
+                        setTimeout(() => { copyBtn.textContent = '📋 نسخ'; }, 1500);
+                    }).catch(() => {
+                        copyBtn.textContent = '❌ فشل';
+                        setTimeout(() => { copyBtn.textContent = '📋 نسخ'; }, 1500);
+                    });
+                };
+                wrapper.appendChild(copyBtn);
+            }
+            
+            div.appendChild(wrapper);
             messagesEl.appendChild(div);
             messagesEl.scrollTop = messagesEl.scrollHeight;
-        }
-
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
         }
 
         function showTyping() {
@@ -318,7 +297,5 @@ div.innerHTML = '<div class="bubble">' + rendered + '</div>';
         });
         inputEl.focus();
     </script>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js">
-</script>
 </body>
 </html>

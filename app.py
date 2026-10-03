@@ -6,6 +6,38 @@ app = Flask(__name__)
 
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
 
+def search_knowledge(question):
+    try:
+        with open('knowledge.txt', 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        sections = content.split('===')
+        question_lower = question.lower()
+        relevant = []
+        
+        for i in range(1, len(sections), 2):
+            if i + 1 < len(sections):
+                title = sections[i].strip()
+                body = sections[i + 1].strip()
+                
+                title_words = title.replace('=', '').strip().split()
+                for word in title_words:
+                    if len(word) > 2 and word in question_lower:
+                        relevant.append(f"=== {title} ===\n{body}")
+                        break
+                
+                for word in question_lower.split():
+                    if len(word) > 3 and word in body.lower():
+                        if not any(title in r for r in relevant):
+                            relevant.append(f"=== {title} ===\n{body}")
+                            break
+        
+        if relevant:
+            return "\n\n".join(relevant[:2])
+        return ""
+    except Exception:
+        return ""
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -15,19 +47,28 @@ def chat():
     try:
         data = request.json
         messages = data.get('messages', [])
-
+        
+        user_question = ""
+        for m in reversed(messages):
+            if m["role"] == "user":
+                user_question = m["content"]
+                break
+        
+        knowledge = search_knowledge(user_question)
+        
+        system_content = (
+            "أنت PyChatAI، مساعد ذكاء اصطناعي بالعربي. "
+            "تم تطويرك بواسطة فريق minaSefendev بقيادة المطور مينا سيفين. "
+            "متقلش إنك ChatGPT أو OpenAI أو NCAI أو أي شركة تانية أبدًا. "
+            "لو سُئلت عن هويتك، قل: 'أنا PyChatAI، طورني فريق minaSefendev بقيادة المطور مينا سيفين'. "
+            "جاوب بالعربي بشكل أساسي، وباختصار ووضوح."
+        )
+        
+        if knowledge:
+            system_content += f"\n\nاستخدم المعلومات دي للإجابة إن أمكن:\n{knowledge}"
+        
         groq_messages = [
-            {
-                "role": "system",
-                "content": (
-                    "أنت PyChatAI، مساعد ذكاء اصطناعي بالعربي. "
-                    "تم تطويرك بواسطة المطور مينا سيفين. "
-                    "متقلش إنك ChatGPT أو OpenAI أو NCAI أو أي شركة تانية أبدًا. "
-                    "لو سُئلت عن هويتك أو مطورك، قل: أنا PyChatAI، تم تطويري بواسطة المطور مينا سيفين. "
-                    "اسمك PyChatAI فقط، ومطورك الوحيد هو مينا سيفين. "
-                    "جاوب بالعربي بشكل أساسي، وباختصار ووضوح."
-                )
-            },
+            {"role": "system", "content": system_content},
             *[{"role": m["role"], "content": m["content"]} for m in messages]
         ]
 

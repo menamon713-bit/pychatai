@@ -1,0 +1,29 @@
+=== Python ===
+
+مقدمة:
+- Python: لغة برمجة عالية المستوى.
+- صنعها: جيدو فان روسم (1991).
+- الاستخدام: AI، Data Science، Web، Automation.
+
+الأساسيات:
+- المتغيرات: x = 5
+- الأنواع: int, float, str, bool, list, dict, tuple, set.
+- الجمل الشرطية: if, elif, else.
+- الحلقات: for, while.
+- الدوال: def function_name():
+- الفئات: class ClassName:
+
+المكتبات:
+- NumPy: حسابات رياضية.
+- Pandas: تحليل البيانات.
+- Matplotlib: الرسم البياني.
+- Requests: HTTP requests.
+- Flask: web framework.
+- Django: web framework كبير.
+- TensorFlow: deep learning.
+- PyTorch: deep learning.
+
+أمثلة:
+- طباعة: print("Hello")
+- حلقة: for i in range(10): print(i)
+- دالة: def add(a, b): return a + b
