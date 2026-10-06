@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, jsonify
 import requests
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static', static_url_path='/static')
 
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
 
@@ -41,6 +41,9 @@ def search_knowledge(question):
 @app.route('/')
 def index():
     return render_template('index.html')
+@app.route('/loader.io-699f51dd60254fd595e43958b00a5266.txt')
+def loader_verify():
+    return app.send_static_file('loader.io-699f51dd60254fd595e43958b00a5266.txt')
 
 @app.route('/chat', methods=['POST'])
 def chat():
